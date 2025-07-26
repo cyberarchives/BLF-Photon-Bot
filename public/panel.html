@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+<body>
+    <div class="app">
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>Bot Dashboard</h1>
+            </div>
+            <div class="nav">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" data-page="control">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Bot Control
+                </a>
+                <a href="#" class="nav-item" data-page="players">
+                    <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Players
+                </a>
+            </div>
+        </nav>
+
+        <main class="main">
+            <header class="header">
+                <h2 id="page-title">Dashboard</h2>
+                <p id="page-description">Monitor your bot's performance and activity</p>
+            </header>
+
+            <div class="content">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="connection-stat">●</div>
+                            <div class="stat-label">Connection Status</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="room-stat">—</div>
+                            <div class="stat-label">Current Room</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="players-stat">5</div>
+                            <div class="stat-label">Active Players</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="uptime-stat">0m</div>
+                            <div class="stat-label">Uptime</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="card-icon" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                System Status
+                            </h3>
+                        </div>
+                        <div class="grid grid-2">
+                            <div>
+                                <div class="status" id="connection-status">
+                                    <div class="status-dot"></div>
+                                    Disconnected
+                                </div>
+                                <div style="margin-top: 16px;">
+                                    <strong>Bot Account:</strong>
+                                    <span id="bot-account" style="color: var(--text-secondary); margin-left: 8px;">Not Generated</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Quick Actions</div>
+                                <button class="btn btn-primary" onclick="generateRandomAccount()" style="margin-right: 8px;">Generate Account</button>
+                                <button class="btn btn-secondary" onclick="toggleConnection()">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Page -->
+                <div id="control-page" class="page">
+                    <div class="grid grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg class="card-icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Bot Management
+                                </h3>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="room-name">Room Name</label>
+                                <input type="text" id="room-name" class="form-input" placeholder="Enter room name...">
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn btn-primary" onclick="generateRandomAccount()">Generate Account</button>
+                                <button class="btn btn-success" onclick="joinRoom()">Join Room</button>
+                                <button class="btn btn-danger" onclick="leaveRoom()">Leave Room</button>
+                                <button class="btn btn-danger" onclick="respawnBot()">Deploy / Respawn</button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <svg class="card-icon" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Settings
+                                </h3>
+                            </div>
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Show Join Message</div>
+                                    <div class="setting-description">Display notification when bot joins room</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="show-join-message" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <div>
+                                    <div class="setting-label">Show on Leaderboard</div>
+                                    <div class="setting-description">Display bot in player rankings</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="show-on-leaderboard" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Players Page -->
+                <div id="players-page" class="page">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Rank</th>
+                                    <th>K/D</th>
+                                    <th>Team</th>
+                                    <th>Kills</th>
+                                    <th>Platform</th>
+                                    <th>Health</th>
+                                    <th>Ping</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players-table">
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;">P</div>
+                                            <div>
+                                                <div style="font-weight: 500;">ProGamer_2024</div>
+                                                <div style="font-size: 12px; color: var(--text-secondary);">ID: 1</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-warning">Master</span></td>
+                                    <td>2.4</td>
+                                    <td><span class="badge badge-primary">Team 1</span></td>
+                                    <td>147</td>
+                                    <td>🖥️ PC</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div class="health-bar">
+                                                <div class="health-fill health-high" style="width: 85%;"></div>
+                                            </div>
+                                            85%
+                                        </div>
+                                    </td>
+                                    <td><span style="color: var(--success);">32ms</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;">S</div>
+                                            <div>
+                                                <div style="font-weight: 500;">SniperElite</div>
+                                                <div style="font-size: 12px; color: var(--text-secondary);">ID: 2</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-success">Diamond</span></td>
+                                    <td>3.1</td>
+                                    <td><span class="badge badge-danger">Team 2</span></td>
+                                    <td>203</td>
+                                    <td>🎮 Console</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div class="health-bar">
+                                                <div class="health-fill health-medium" style="width: 60%;"></div>
+                                            </div>
+                                            60%
+                                        </div>
+                                    </td>
+                                    <td><span style="color: var(--warning);">67ms</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;">R</div>
+                                            <div>
+                                                <div style="font-weight: 500;">RushMaster</div>
+                                                <div style="font-size: 12px; color: var(--text-secondary);">ID: 3</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-primary">Platinum</span></td>
+                                    <td>1.8</td>
+                                    <td><span class="badge badge-primary">Team 1</span></td>
+                                    <td>89</td>
+                                    <td>📱 Mobile</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <div class="health-bar">
+                                                <div class="health-fill health-low" style="width: 25%;"></div>
+                                            </div>
+                                            25%
+                                        </div>
+                                    </td>
+                                    <td><span style="color: var(--danger);">145ms</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Global state
+        let currentBotId = null;
+        let connectionStatus = false;
+        let currentRoom = '';
+        let botAccount = '';
+        let startTime = null;
+        let updateInterval = null;
+
+        const hostname = window.location.hostname;
+
+        // API Configuration
+        const API_BASE_URL = "/api"; // Adjust this to your API server URL
+
+        // API Helper functions
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `HTTP ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = item.getAttribute('data-page');
+                switchPage(page);
+            });
+        });
+
+        function switchPage(page) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+            // Update pages
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            document.getElementById(`${page}-page`).classList.add('active');
+
+            // Update header
+            const titles = {
+                dashboard: 'Dashboard',
+                control: 'Bot Control',
+                players: 'Active Players'
+            };
+            const descriptions = {
+                dashboard: 'Monitor your bot\'s performance and activity',
+                control: 'Manage bot settings and room connections',
+                players: 'View connected players and their stats'
+            };
+            
+            document.getElementById('page-title').textContent = titles[page];
+            document.getElementById('page-description').textContent = descriptions[page];
+
+            // Load page-specific data
+            if (page === 'players') {
+                loadPlayersData();
+            }
+        }
+
+        async function generateRandomAccount() {
+            try {
+                showNotification('Creating new bot...', 'info');
+                
+                const showJoinMessage = document.getElementById('show-join-message')?.checked ?? true;
+                
+                const response = await apiCall('/bots', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        showJoinMessageInChat: showJoinMessage
+                    })
+                });
+
+                currentBotId = response.botId;
+                botAccount = response.account.username;
+                
+                document.getElementById('bot-account').textContent = botAccount;
+                
+                showNotification('Bot created successfully!', 'success');
+                
+                // Start status monitoring
+                startStatusMonitoring();
+                
+            } catch (error) {
+                showNotification(`Failed to create bot: ${error.message}`, 'error');
+            }
+        }
+
+        async function joinRoom() {
+            const roomName = document.getElementById('room-name').value.trim();
+            
+            if (!roomName) {
+                showNotification('Please enter a room name', 'error');
+                return;
+            }
+            
+            if (!currentBotId) {
+                showNotification('Please generate a bot account first', 'error');
+                return;
+            }
+            
+            try {
+                showNotification('Joining room...', 'info');
+                
+                const response = await apiCall(`/bots/${currentBotId}/join-room`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        roomName: roomName
+                    })
+                });
+
+                currentRoom = roomName;
+                startTime = Date.now();
+                
+                showNotification(response.message, 'success');
+                
+                // Update status immediately and start monitoring
+                updateStatus();
+                
+            } catch (error) {
+                showNotification(`Failed to join room: ${error.message}`, 'error');
+            }
+        }
+
+        async function respawnBot() {
+            const roomName = document.getElementById('room-name').value.trim();
+            if (!currentBotId) {
+                showNotification('Please generate a bot account first', 'error');
+                return;
+            }
+            
+            try {
+                showNotification('Respawning bot...', 'info');
+                
+                const response = await apiCall(`/bots/${currentBotId}/spawn`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        roomName: roomName
+                    })
+                });
+                
+                showNotification(response.message, 'success');
+                
+                // Update status immediately and start monitoring
+                updateStatus();
+                
+            } catch (error) {
+                showNotification(`Failed to join room: ${error.message}`, 'error');
+            }
+        }
+
+        async function leaveRoom() {
+            if (!currentBotId) {
+                showNotification('No bot active', 'error');
+                return;
+            }
+            
+            try {
+                showNotification('Leaving room...', 'info');
+                
+                const response = await apiCall(`/bots/${currentBotId}/leave-room`, {
+                    method: 'POST'
+                });
+
+                connectionStatus = false;
+                currentRoom = '';
+                startTime = null;
+                
+                updateStatus();
+                removeBotFromPlayerList();
+                
+                showNotification(response.message, 'info');
+                
+            } catch (error) {
+                showNotification(`Failed to leave room: ${error.message}`, 'error');
+            }
+        }
+
+        async function toggleConnection() {
+            if (connectionStatus) {
+                await leaveRoom();
+            } else {
+                if (!currentBotId) {
+                    await generateRandomAccount();
+                }
+                
+                // Generate random room if empty
+                if (!document.getElementById('room-name').value.trim()) {
+                    document.getElementById('room-name').value = 'Room(#' + Math.floor(Math.random() * 9999) + ')';
+                }
+                
+                await joinRoom();
+            }
+        }
+
+        async function getBotStatus() {
+            if (!currentBotId) return null;
+            
+            try {
+                const response = await apiCall(`/bots/${currentBotId}/status`);
+                return response.status;
+            } catch (error) {
+                console.error('Failed to get bot status:', error);
+                return null;
+            }
+        }
+
+        async function updateStatus() {
+            const statusElement = document.getElementById('connection-status');
+            const statElement = document.getElementById('connection-stat');
+            const roomStat = document.getElementById('room-stat');
+            
+            if (!currentBotId) {
+                statusElement.innerHTML = '<div class="status-dot"></div>No Bot';
+                statusElement.className = 'status status-offline';
+                statElement.textContent = 'No Bot';
+                statElement.style.color = 'var(--text-muted)';
+                roomStat.textContent = '—';
+                return;
+            }
+
+            const botStatus = await getBotStatus();
+            
+            if (botStatus) {
+                connectionStatus = botStatus.isInGame || botStatus.isInRoom;
+                currentRoom = botStatus.gameRoomName || '';
+                
+                if (connectionStatus) {
+                    statusElement.innerHTML = '<div class="status-dot"></div>Connected';
+                    statusElement.className = 'status status-online';
+                    statElement.textContent = 'Online';
+                    statElement.style.color = 'var(--success)';
+                    roomStat.textContent = currentRoom || '—';
+                    
+                    // Update start time from server uptime if available
+                    if (botStatus.uptime && !startTime) {
+                        startTime = Date.now() - botStatus.uptime;
+                    }
+                } else {
+                    statusElement.innerHTML = '<div class="status-dot"></div>Disconnected';
+                    statusElement.className = 'status status-offline';
+                    statElement.textContent = 'Offline';
+                    statElement.style.color = 'var(--text-muted)';
+                    roomStat.textContent = '—';
+                }
+            }
+        }
+
+        async function loadPlayersData() {
+            if (!currentBotId) {
+                document.getElementById('players-table').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                            No bot active. Create a bot and join a room to see players.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            try {
+                const response = await apiCall(`/bots/${currentBotId}/players`);
+                const players = response.players;
+                
+                renderPlayersTable(players);
+                
+            } catch (error) {
+                console.error('Failed to load players:', error);
+                document.getElementById('players-table').innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: var(--error); padding: 40px;">
+                            Failed to load players: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderPlayersTable(players) {
+            const tableBody = document.getElementById('players-table');
+            
+            if (!players || players.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                            No players found. Join a room with other players to see them here.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let tableHTML = '';
+            
+            // Add bot row first if connected
+            if (connectionStatus && botAccount) {
+                tableHTML += `
+                    <tr id="bot-row" style="background: rgba(139, 92, 246, 0.1);">
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;">🤖</div>
+                                <div>
+                                    <div style="font-weight: 500;">${botAccount}</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Bot ID: ${currentBotId.substring(0, 8)}...</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-primary">Bot</span></td>
+                        <td>∞</td>
+                        <td><span class="badge badge-primary">Team Auto</span></td>
+                        <td>0</td>
+                        <td>🤖 Bot Client</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div class="health-bar">
+                                    <div class="health-fill health-high" style="width: 100%;"></div>
+                                </div>
+                                100%
+                            </div>
+                        </td>
+                        <td><span style="color: var(--success);">0ms</span></td>
+                    </tr>
+                `;
+            }
+            
+            // Add real players
+            players.forEach(playerObj => {
+                // Each player object has a single key (actorNr) with player data
+                const actorNr = Object.keys(playerObj)[0];
+                const player = playerObj[actorNr];
+                
+                const teamBadge = player.team === 0 ? 'Team 1' : player.team === 1 ? 'Team 2' : 'Team Auto';
+                const teamClass = player.team === 0 ? 'badge-primary' : player.team === 1 ? 'badge-secondary' : 'badge-info';
+                
+                // Generate random health for demo (since not provided by API)
+                const health = Math.floor(Math.random() * 100) + 1;
+                const healthClass = health > 70 ? 'health-high' : health > 30 ? 'health-medium' : 'health-low';
+                
+                // Generate random ping
+                const ping = Math.floor(Math.random() * 100) + 10;
+                const pingColor = ping < 50 ? 'var(--success)' : ping < 100 ? 'var(--warning)' : 'var(--error)';
+                
+                tableHTML += `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: white;">${player.name.charAt(0).toUpperCase()}</div>
+                                <div>
+                                    <div style="font-weight: 500;">${player.name}</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">ID: ${player.actorNr}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-success">Rank ${player.rank}</span></td>
+                        <td>${player.kd.toFixed(2)}</td>
+                        <td><span class="badge ${teamClass}">${teamBadge}</span></td>
+                        <td>${player.kills}</td>
+                        <td>${player.platform}</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <div class="health-bar">
+                                    <div class="health-fill ${healthClass}" style="width: ${health}%;"></div>
+                                </div>
+                                ${health}%
+                            </div>
+                        </td>
+                        <td><span style="color: ${pingColor};">${ping}ms</span></td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = tableHTML;
+        }
+
+        function addBotToPlayerList() {
+            // This is now handled in renderPlayersTable
+            loadPlayersData();
+        }
+
+        function removeBotFromPlayerList() {
+            const botRow = document.getElementById('bot-row');
+            if (botRow) {
+                botRow.remove();
+            }
+        }
+
+        function startStatusMonitoring() {
+            // Clear existing interval
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+            
+            // Update status every 3 seconds
+            updateInterval = setInterval(async () => {
+                await updateStatus();
+                updateUptime();
+                
+                // Auto-refresh players page if it's active
+                const activePage = document.querySelector('.page.active');
+                if (activePage && activePage.id === 'players-page') {
+                    loadPlayersData();
+                }
+            }, 3000);
+        }
+
+        function stopStatusMonitoring() {
+            if (updateInterval) {
+                clearInterval(updateInterval);
+                updateInterval = null;
+            }
+        }
+
+        async function deleteBotInstance() {
+            if (!currentBotId) {
+                showNotification('No bot to delete', 'error');
+                return;
+            }
+            
+            try {
+                const response = await apiCall(`/bots/${currentBotId}`, {
+                    method: 'DELETE'
+                });
+                
+                // Reset state
+                currentBotId = null;
+                connectionStatus = false;
+                currentRoom = '';
+                botAccount = '';
+                startTime = null;
+                
+                document.getElementById('bot-account').textContent = 'Not generated';
+                
+                stopStatusMonitoring();
+                updateStatus();
+                removeBotFromPlayerList();
+                
+                showNotification(response.message, 'info');
+                
+            } catch (error) {
+                showNotification(`Failed to delete bot: ${error.message}`, 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 24px;
+                right: 24px;
+                padding: 16px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                max-width: 320px;
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                animation: slideIn 0.3s ease;
+                font-size: 14px;
+            `;
+            
+            switch(type) {
+                case 'success':
+                    notification.style.background = 'rgba(16, 185, 129, 0.9)';
+                    break;
+                case 'error':
+                    notification.style.background = 'rgba(239, 68, 68, 0.9)';
+                    break;
+                case 'info':
+                    notification.style.background = 'rgba(59, 130, 246, 0.9)';
+                    break;
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function updateUptime() {
+            if (startTime) {
+                const elapsed = Date.now() - startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const hours = Math.floor(minutes / 60);
+                
+                let uptimeText;
+                if (hours > 0) {
+                    uptimeText = `${hours}h ${minutes % 60}m`;
+                } else {
+                    uptimeText = `${minutes}m`;
+                }
+                
+                document.getElementById('uptime-stat').textContent = uptimeText;
+            } else {
+                document.getElementById('uptime-stat').textContent = '0m';
+            }
+        }
+
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOut {
+                to {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add delete bot button functionality if it exists
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add delete button to control panel if it doesn't exist
+            const controlPage = document.getElementById('control-page');
+            if (controlPage && !document.getElementById('delete-bot-btn')) {
+                const deleteButton = document.createElement('button');
+                deleteButton.id = 'delete-bot-btn';
+                deleteButton.className = 'btn btn-danger';
+                deleteButton.textContent = 'Delete Bot';
+                deleteButton.style.marginTop = '16px';
+                deleteButton.onclick = deleteBotInstance;
+                
+                // Find a good place to insert the delete button
+                const buttons = controlPage.querySelectorAll('.btn');
+                if (buttons.length > 0) {
+                    buttons[buttons.length - 1].parentNode.appendChild(deleteButton);
+                }
+            }
+        });
+
+        // Initialize
+        updateStatus();
+        updateUptime();
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            stopStatusMonitoring();
+        });
+    </script>
+</body>
+</html>
