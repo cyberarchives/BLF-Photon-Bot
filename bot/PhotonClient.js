@@ -299,11 +299,11 @@ convertToPhotonType(value) {
         
       case 5:
         // Test: Unicode edge cases in strings
-        // Some servers have issues with certain Unicode ranges
+        // Some servers have issues with certain Unicode ranges, really stupid
         const problemChars = "\u0000\u001F\u007F\u0080\u009F\uD800\uDFFF\uFFFE\uFFFF";
         let largeString = problemChars;
         for (let i = 0; i < 10; i++) {
-          largeString += largeString; // Exponentially grow the string
+          largeString += largeString; // Exponentially grow the string, not sure why this works; but it does
         }
         
         this.opParameters.set(ParameterCode.Code, PhotonPacketBuilder.types.byte(200));
@@ -312,5 +312,6 @@ convertToPhotonType(value) {
     }
   }
 }
+
 
 module.exports = PhotonClient;
